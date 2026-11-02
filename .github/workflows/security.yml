@@ -1,0 +1,19 @@
+name: Security and protocol tests
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  offline-security-tests:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2 pinned
+      - name: Verify Python and run offline tests
+        shell: bash
+        run: |
+          python -V || python3 -V
+          (python -m unittest discover -s tests -v || python3 -m unittest discover -s tests -v)
